@@ -19,7 +19,7 @@ void toh(int n, char a, char b, char c)
 int main()
 {
     int n;
-    char a = 'A', b = 'B', c = 'C';                         //user input
+    char a = 'A', b = 'B', c = 'C';                         //Should be user input
     cout<<"Enter no of disks\t";
     cin>>n;
     toh(n, a, b, c);
