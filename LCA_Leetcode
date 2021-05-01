@@ -1,0 +1,68 @@
+/**
+Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both 
+p and q as descendants (where we allow a node to be a descendant of itself).”
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+
+/*
+Function: If p exists in the tree with root 'root', then return true, else return false.
+Parameters:
+TreeNode* root: Current node which is to be compared
+TreeNode* p: Node to be compared with
+*/
+    bool find(TreeNode* root, TreeNode* p)
+    {
+        if(root == NULL)
+            return false;                     //We have reached the end and still haven't found p
+        if(root == p)
+            return true;                      //If p is found
+        bool left, right;
+        left = find(root->left,p);            //If not found, check in left and right subtrees
+        right = find(root->right,p);
+        return (left or right);               //Return true if p is found in either left or right subtree
+    }
+    
+/*
+Function: Find the and return the LCA.
+Parameters:
+TreeNode* root: Current node
+TreeNode* p: Descendent Node
+TreeNode* p: Descendent Node
+*/
+    
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == NULL)
+            return root;
+        if(root->left != nullptr and root->right != nullptr)                                //if both right and left children are present
+        {
+            if(find(root->left, p) == true and find(root->left, q) == true)                 //If both p and q are in the left subtree
+                return lowestCommonAncestor(root->left, p, q);
+            if(find(root->right, p) == true and find(root->right, q) == true)               //If both p and q are in the right subtree
+                return lowestCommonAncestor(root->right, p, q);
+            if((find(root->left,p)==true and find(root->right,q)==true)or(find(root->left,q)==true and find(root->right,p)==true))
+                return root;                                                                //If one is in left subtree and other is in right subtree
+        }
+        else if(root->left != nullptr)                                                      // No right subtree
+        {
+            if(find(root->left, p) == true and find(root->left, q) == true)
+                return lowestCommonAncestor(root->left, p, q);
+        }
+        else if(root->right != nullptr)                                                     //No left subtree
+        {
+            if(find(root->right, p) == true and find(root->right, q) == true)
+                return lowestCommonAncestor(root->right, p, q);
+        }
+        return root;
+    }
+};
